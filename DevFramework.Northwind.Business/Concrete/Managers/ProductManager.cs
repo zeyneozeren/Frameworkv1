@@ -9,15 +9,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DevFramework.Core.DataAccess;
 
 namespace DevFramework.Northwind.Business.Concrete.Managers
 {
     public class ProductManager : IProductService
     {
         private IProductDal _productDal;
+       
 
         public ProductManager(IProductDal productDal)
         {
+           
             _productDal = productDal;
         }
         [FluentValidationAspect(typeof(ProductValidator))]
@@ -29,12 +32,13 @@ namespace DevFramework.Northwind.Business.Concrete.Managers
         [FluentValidationAspect(typeof(ProductValidator))]
         public Product Update(Product product)
         {
-            ValidatorTool.FluentValidate(new ProductValidator(), product);
+            //ValidatorTool.FluentValidate(new ProductValidator(), product);
             return _productDal.Update(product);
         }
 
         public List<Product> GetAll()
         {
+            
             return _productDal.GetList();
         }
 
