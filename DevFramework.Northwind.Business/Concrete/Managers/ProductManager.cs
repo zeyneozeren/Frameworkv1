@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DevFramework.Core.DataAccess;
+using DevFramework.Core.CrossCuttingConcerns.Caching.Microsoft;
 
 namespace DevFramework.Northwind.Business.Concrete.Managers
 {
@@ -24,18 +25,21 @@ namespace DevFramework.Northwind.Business.Concrete.Managers
             _productDal = productDal;
         }
         [FluentValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect(typeof(MemoryCacheManager))]
         public Product Add(Product product)
         {
             //ValidatorTool.FluentValidate(new ProductValidator(), product); yerıne [FluentValidate(typeof(ProductValidator))] yazdık
             return _productDal.Add(product);
         }
         [FluentValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect(typeof(MemoryCacheManager))]
         public Product Update(Product product)
         {
             //ValidatorTool.FluentValidate(new ProductValidator(), product);
             return _productDal.Update(product);
         }
 
+        [CacheAspect(typeof(MemoryCacheManager))]
         public List<Product> GetAll()
         {
             
