@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DevFramework.Core.DataAccess;
 using DevFramework.Core.CrossCuttingConcerns.Caching.Microsoft;
+using DevFramework.Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 
 namespace DevFramework.Northwind.Business.Concrete.Managers
 {
@@ -24,6 +25,7 @@ namespace DevFramework.Northwind.Business.Concrete.Managers
            
             _productDal = productDal;
         }
+
         [FluentValidationAspect(typeof(ProductValidator))]
         [CacheRemoveAspect(typeof(MemoryCacheManager))]
         public Product Add(Product product)
@@ -31,6 +33,7 @@ namespace DevFramework.Northwind.Business.Concrete.Managers
             //ValidatorTool.FluentValidate(new ProductValidator(), product); yerıne [FluentValidate(typeof(ProductValidator))] yazdık
             return _productDal.Add(product);
         }
+
         [FluentValidationAspect(typeof(ProductValidator))]
         [CacheRemoveAspect(typeof(MemoryCacheManager))]
         public Product Update(Product product)
@@ -40,6 +43,8 @@ namespace DevFramework.Northwind.Business.Concrete.Managers
         }
 
         [CacheAspect(typeof(MemoryCacheManager))]
+        [LogAspect(typeof(DatabaseLogger))]
+        [LogAspect(typeof(FileLogger))]
         public List<Product> GetAll()
         {
             
